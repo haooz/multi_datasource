@@ -13,9 +13,11 @@ import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -35,12 +37,14 @@ public class DruidConfig {
     }
 
     @Bean
+    @RefreshScope
     @ConfigurationProperties("spring.datasource.druid.master")
     public DataSource masterDataSource(){
         return DruidDataSourceBuilder.create().build();
     }
 
     @Bean
+    @RefreshScope
     @ConfigurationProperties("spring.datasource.druid.slave")
     @ConditionalOnProperty(prefix="spring.datasource.druid.slave",name="enabled",havingValue = "true")
     public DataSource slaveDataSource(){
